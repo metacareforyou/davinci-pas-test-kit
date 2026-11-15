@@ -58,7 +58,14 @@ module DaVinciPASTestKit
     # ClaimResponse.addItem, but profile-claimresponse marks all three must-support there.
     %r{The extension http://hl7\.org/fhir/us/davinci-pas/StructureDefinition/extension-revenueUnitRateLimit( v[\d.]+)? is not allowed to be used at this point \(this element is \[(?:BackboneElement, )?ClaimResponse\.addItem\]},
     %r{The extension http://hl7\.org/fhir/us/davinci-pas/StructureDefinition/extension-serviceItemRequestType( v[\d.]+)? is not allowed to be used at this point \(this element is \[(?:BackboneElement, )?ClaimResponse\.addItem\]},
-    %r{The extension http://hl7\.org/fhir/us/davinci-pas/StructureDefinition/extension-certificationType( v[\d.]+)? is not allowed to be used at this point \(this element is \[(?:BackboneElement, )?ClaimResponse\.addItem\]}
+    %r{The extension http://hl7\.org/fhir/us/davinci-pas/StructureDefinition/extension-certificationType( v[\d.]+)? is not allowed to be used at this point \(this element is \[(?:BackboneElement, )?ClaimResponse\.addItem\]},
+    # IG package conflict: PAS 2.2.1 depends on CDex 2.1.0, which depends on DTR 2.1.0 and, through it, CRD 2.1.0,
+    # beside the CRD 2.2.1 PAS depends on directly. The DTR intendedUse extension URL is unversioned, so the
+    # validator resolves it to DTR 2.1.0, whose binding resolves to CRD 2.1.0 DocReason (CodeSystem/temp codes),
+    # while codes are looked up under CRD 2.2.1, which moved them to coverage-information-codes. A DTR 2.2.0
+    # QuestionnaireResponse with a CRD 2.2.1 DocReason code (the binding DTR 2.2.0 defines) then fails, and no
+    # coding can pass. Anchored on DocReason 2.1.0 and a CRD 2.2.1 DocReason code, so any other coding still fails.
+    %r{None of the codings provided are in the value set .*\(http://hl7\.org/fhir/us/davinci-crd/ValueSet/DocReason\|2\.1\.0\).*\(codes = (?:[^)]*, )?http://hl7\.org/fhir/us/davinci-crd/CodeSystem/coverage-information-codes#(?:withpa|withclaim|withorder|retain-doc)(?:,[^)]*)?\)}
   ].freeze
 
   # This list captures all validator messages suppressed for the v2.0.1 suites
