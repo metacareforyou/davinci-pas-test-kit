@@ -29,6 +29,11 @@ module DaVinciPASTestKit
     # cannot be checked and the failure is unactionable. Anchored on each value set's canonical URL.
     %r{None of the codings provided are in the value set .*http://hl7\.org/fhir/us/davinci-pas/ValueSet/pas-pwk01-attachment-report-type-code},
     %r{None of the codings provided are in the value set .*http://hl7\.org/fhir/us/davinci-pas/ValueSet/PASCommunicationRequestMedium},
+    # The same holds for these two, which draw every member from one X12 code system each: 889 for
+    # X12278FollowUpActionCodes (bound to extension-errorFollowupAction, must support on ClaimResponse.error) and
+    # 886 for X12278ReviewDecisionReasonCode (bound to the reasonCode part of extension-reviewAction).
+    %r{None of the codings provided are in the value set .*http://hl7\.org/fhir/us/davinci-pas/ValueSet/X12278FollowUpActionCodes},
+    %r{None of the codings provided are in the value set .*http://hl7\.org/fhir/us/davinci-pas/ValueSet/X12278ReviewDecisionReasonCode},
     # The IG references this draft code system with bindings stronger than example.
     'Reference to draft CodeSystem http://hl7.org/fhir/us/davinci-pas/CodeSystem/PASTempCodes',
     # IG defect: these extensions are marked must-support at a location that their own context
